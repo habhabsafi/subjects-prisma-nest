@@ -3,9 +3,13 @@ import { AppService } from "./app.service"
 import { AuthService } from './services/auth/auth.service'
 import { LocalAuthGuard } from "./services/auth/local-auth.guard";
 import { JwtAuthGuard } from './services/auth/jwt-auth.guard';
+import { TasksService } from "./services/tasks/tasks.services";
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService, private readonly authService: AuthService) { }
+  constructor(private readonly appService: AppService,
+    private readonly authService: AuthService,
+    private readonly tasksService: TasksService
+  ) { }
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
@@ -25,7 +29,7 @@ export class AppController {
   @Get()
   getHello(): string {
     Logger.log("hello")
-
+    // this.tasksService.handleCron();
     return this.appService.getHello()
   }
 }

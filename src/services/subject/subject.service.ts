@@ -1,27 +1,31 @@
-import { Get, Injectable } from '@nestjs/common';
+import { Get, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service'
 import { SubjectSortProps, EditSubjectModel, AddSubjectModel, FilteredSubjects, Subject as SubjectDto, SubjectFilter, Subject } from '../../dtos/subject.dto'
 import { Subject as SubjectModel } from '.prisma/client';
-
+import { MyLogger } from '../logger/logger.service';
 
 @Injectable()
 export class SubjectService {
-  constructor(private readonly prismaService: PrismaService) {
+  constructor(private readonly prismaService: PrismaService,
+    private readonly loggerService: MyLogger
+  ) {
 
   }
   async create(addSubjectModel: AddSubjectModel) {
-
     const addedSubject = await this.prismaService.subject.create({ data: addSubjectModel })
     return this.subjectMap(addedSubject);
   }
 
 
   async GetById(id: number): Promise<SubjectDto | undefined> {
+
     const record = await this.prismaService.subject.findUnique({
       where: {
         id: +id
       }
     });
+    this.loggerService.log(`logged subject title : ${record.title}`)
+
     return this.subjectMap(record);
   }
   async GetAllFiltered(subjectFilter: SubjectFilter): Promise<FilteredSubjects> {
@@ -92,7 +96,15 @@ export class SubjectService {
       }
     });
   }
+  async errorMethod() {
+    try {
+      throw new NotFoundException
+    } catch (exception) {
 
+      this.loggerService.error(exception.toString())
+    }
+
+  }
   private subjectMap(subject: SubjectModel | undefined): SubjectDto | undefined {
 
     if (!subject)

@@ -22,7 +22,10 @@ export class SubjectController {
 
     return updatedSubjectResponse;
   }
-
+  @Get("errorlogger")
+  async errorLogger(): Promise<any> {
+    this.subjectService.errorMethod();
+  }
   @Delete(':id')
   async deleteSubject(@Param('id') id: number): Promise<boolean> {
     const result = await this.subjectService.delete(id)
@@ -33,6 +36,7 @@ export class SubjectController {
   async getById(@Param('id') id: number): Promise<Subject> {
     return await this.subjectService.GetById(id);
   }
+
 
   @Post("getAllFiltered")
   async GetAllFiltered(

@@ -6,13 +6,14 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './services/auth/auth.module';
 import { UsersModule } from './services/users/users.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { TasksModule } from './services/tasks/tasks.module';
 @Module({
   imports: [ControllersModule, ConfigModule.forRoot({
     isGlobal: true,
     envFilePath: `.env`
     // ignoreEnvFile: process.env.ENV !== `DEV`,
   }), AuthModule, UsersModule, ScheduleModule.forRoot()
-
+    , TasksModule
   ],
   controllers: [AppController],
   providers: [AppService],
