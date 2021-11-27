@@ -18,7 +18,8 @@ export class UsersService {
 
     }
 
-    private mapUser(userModel: UserModel | undefined): UserAuth | undefined {
+    private mapUser(userModel: UserModel | undefined | null):
+        UserAuth | undefined {
         if (!userModel)
             return undefined
         const mappedUser = new UserAuth();

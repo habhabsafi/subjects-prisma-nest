@@ -4,7 +4,7 @@ export class Subject {
     createdAt: Date
     updatedAt: Date
     title: string
-    subtitle: string
+    subtitle: string | null
     content: string | null
     isVisible: boolean
     type: number
@@ -15,8 +15,8 @@ export class Subject {
 }
 export class AddSubjectModel {
     title: string
-    subtitle: string | null
-    content: string | null
+    subtitle?: string | null
+    content?: string | null
     isVisible: boolean
     type: number
 }

@@ -13,6 +13,13 @@ export class SubjectController {
     AddedSubjectResponse.record = result
     return AddedSubjectResponse;
   }
+  //@Post()
+  // async create(@Body() addSubjectModel: AddSubjectModel): Promise<Subject> {
+  //   const result = await this.subjectService.create(addSubjectModel)
+  //   // const AddedSubjectResponse = new ClientResponseModel<Subject>()
+  //   // AddedSubjectResponse.record = result
+  //   return result;
+  // }
 
   @Put()
   async update(@Body() editSubjectModel: EditSubjectModel): Promise<ClientResponseModel<Subject>> {
@@ -33,7 +40,7 @@ export class SubjectController {
   }
 
   @Get(":id")
-  async getById(@Param('id') id: number): Promise<Subject> {
+  async getById(@Param('id') id: number): Promise<Subject | undefined> {
     return await this.subjectService.GetById(id);
   }
 

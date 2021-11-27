@@ -11,8 +11,10 @@ export class SubjectService {
   ) {
 
   }
-  async create(addSubjectModel: AddSubjectModel) {
+  async create(addSubjectModel: any): Promise<SubjectDto> {
+
     const addedSubject = await this.prismaService.subject.create({ data: addSubjectModel })
+
     return this.subjectMap(addedSubject);
   }
 
@@ -24,9 +26,12 @@ export class SubjectService {
         id: +id
       }
     });
-    this.loggerService.log(`logged subject title : ${record.title}`)
+    if (record) {
+      this.loggerService.log(`logged subject title : ${record.title}`)
 
-    return this.subjectMap(record);
+      return this.subjectMap(record);
+    }
+    return undefined
   }
   async GetAllFiltered(subjectFilter: SubjectFilter): Promise<FilteredSubjects> {
 
@@ -77,7 +82,7 @@ export class SubjectService {
 
   }
 
-  async update(editSubjectModel: EditSubjectModel): Promise<SubjectDto> {
+  async update(editSubjectModel: EditSubjectModel): Promise<SubjectDto | undefined> {
     const updatedSubject = await this.prismaService.subject.update({
       where: {
         id: editSubjectModel.id
@@ -105,12 +110,9 @@ export class SubjectService {
     }
 
   }
-  private subjectMap(subject: SubjectModel | undefined): SubjectDto | undefined {
+  private subjectMap(subject: SubjectModel): SubjectDto {
 
-    if (!subject)
-      return undefined
     const parsedDto = new SubjectDto();
-
     parsedDto.subtitle = subject.subtitle
     parsedDto.title = subject.title
     parsedDto.content = subject.content
@@ -118,7 +120,9 @@ export class SubjectService {
     parsedDto.type = subject.type
     parsedDto.isVisible = subject.isVisible
     parsedDto.createdAt = subject.createdAt
-    parsedDto.subtitle = subject.subtitle
+    parsedDto.updatedAt = subject.updatedAt
+    parsedDto.authorId = subject.authorId
+
     return parsedDto
   }
 }

@@ -20,7 +20,7 @@ model Subject {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   title     String
-  subtitle  String
+  subtitle  String?
   content   String?
   isVisible Boolean  @default(true)
   type      Int      @default(1)
